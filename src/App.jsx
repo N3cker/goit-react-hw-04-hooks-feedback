@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import Section from './Section';
-import Statistics from './Statistics';
-import FeedbackOptions from './FeedbackOptions';
+import { useState, useEffect } from "react";
+import Section from "./components/Section";
+import Statistics from "./components/Statistics";
+import FeedbackOptions from "./components/FeedbackOptions";
 
-export const App = () => {
+const App = () => {
   const [good, setGood] = useState(0);
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
@@ -29,28 +29,30 @@ export const App = () => {
   return (
     <div
       style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'column',
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
         fontSize: 40,
-        color: '#010101',
+        color: "#010101",
       }}
     >
-      <Section title={'Please leave feedback'}>
-        <FeedbackOptions value={good} setValue={setGood} buttonName={'Good'} />
+      <Section title={"Please leave feedback"}>
+        <FeedbackOptions value={good} setValue={setGood} buttonName={"Good"} />
         <FeedbackOptions
           value={neutral}
           setValue={setNeutral}
-          buttonName={'Neutral'}
+          buttonName={"Neutral"}
         />
-        <FeedbackOptions value={bad} setValue={setBad} buttonName={'Bad'} />
+        <FeedbackOptions value={bad} setValue={setBad} buttonName={"Bad"} />
       </Section>
 
-      <Section title={'Statistics'}>
+      <Section title={"Statistics"}>
         <Statistics g={good} n={neutral} b={bad} t={total} p={positive} />
       </Section>
     </div>
   );
 };
+
+export default App;
