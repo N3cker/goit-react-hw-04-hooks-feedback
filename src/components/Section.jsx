@@ -1,4 +1,5 @@
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 const Section = ({ title, children }) => {
   return (
@@ -9,9 +10,9 @@ const Section = ({ title, children }) => {
   );
 };
 
-export default Section;
-
 Section.propTypes = {
-  tittle: PropTypes.string,
-  children: PropTypes.node,
+  title: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
 };
+
+export default Section;

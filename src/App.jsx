@@ -1,56 +1,61 @@
-import { useState, useEffect } from "react";
-import Section from "./components/Section";
+import React, { useState } from "react";
 import Statistics from "./components/Statistics";
 import FeedbackOptions from "./components/FeedbackOptions";
+import Section from "./components/Section";
+import Notification from "./components/Notification";
 
 const App = () => {
-  const [good, setGood] = useState(0);
-  const [neutral, setNeutral] = useState(0);
-  const [bad, setBad] = useState(0);
-  const [total, setTotal] = useState(0);
-  const [positive, setPositive] = useState(0);
+  const [state, setState] = useState({ good: 0, neutral: 0, bad: 0 });
 
-  const countTotalFeedback = (g, n, b) => g + n + b;
-  const countPositiveFeedbackPercentage = (g, t) => {
-    let percentage = Math.floor((100 * g) / t);
-
-    if (isNaN(percentage)) {
-      return 0;
-    } else {
-      return percentage;
-    }
+  const incrementCount = (category) => {
+    setState((prevState) => ({
+      ...prevState,
+      [category]: prevState[category] + 1,
+    }));
   };
 
-  useEffect(() => {
-    setTotal(countTotalFeedback(good, neutral, bad));
-    setPositive(countPositiveFeedbackPercentage(good, total));
-  }, [good, neutral, bad, total]);
+  const resetCounts = () => {
+    setState({ good: 0, neutral: 0, bad: 0 });
+  };
+
+  const countTotalFeedback = () => {
+    const { good, neutral, bad } = state;
+    return good + neutral + bad;
+  };
+
+  const countPositiveFeedbackPercentage = () => {
+    const { good } = state;
+    const totalFeedback = countTotalFeedback();
+    return totalFeedback === 0 ? 0 : Math.round((good / totalFeedback) * 100);
+  };
+
+  const feedbackOptions = ["good", "neutral", "bad"];
+  const totalFeedback = countTotalFeedback();
+  const positivePercentage = countPositiveFeedbackPercentage();
 
   return (
-    <div
-      style={{
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-        fontSize: 40,
-        color: "#010101",
-      }}
-    >
-      <Section title={"Please leave feedback"}>
-        <FeedbackOptions value={good} setValue={setGood} buttonName={"Good"} />
+    <div>
+      <h1>Review App</h1>
+      <Section title="Leave Feedback">
         <FeedbackOptions
-          value={neutral}
-          setValue={setNeutral}
-          buttonName={"Neutral"}
+          options={feedbackOptions}
+          onLeaveFeedback={incrementCount}
         />
-        <FeedbackOptions value={bad} setValue={setBad} buttonName={"Bad"} />
       </Section>
-
-      <Section title={"Statistics"}>
-        <Statistics g={good} n={neutral} b={bad} t={total} p={positive} />
+      <Section title="Statistics">
+        {totalFeedback === 0 ? (
+          <Notification message="There is no feedback" />
+        ) : (
+          <Statistics
+            good={state.good}
+            neutral={state.neutral}
+            bad={state.bad}
+            total={totalFeedback}
+            positivePercentage={positivePercentage}
+          />
+        )}
       </Section>
+      <button onClick={resetCounts}>Reset Counts</button>
     </div>
   );
 };

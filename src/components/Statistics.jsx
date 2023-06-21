@@ -1,32 +1,25 @@
-import PropTypes from 'prop-types';
-import Notification from './Notification';
+import React from "react";
+import PropTypes from "prop-types";
 
-const Statistics = ({ g, n, b, t, p }) => {
-  if (t) {
-    return (
-      <ul>
-        <li>Good: {g}</li>
-        <li>Neutral: {n}</li>
-        <li>Bad: {b}</li>
-        <li>Total: {t}</li>
-        <li>Positive Feedback: {p}%</li>
-      </ul>
-    );
-  } else {
-    return (
-      <div>
-        <Notification message={'There is no feedback'} />
-      </div>
-    );
-  }
+const Statistics = ({ good, neutral, bad, total, positivePercentage }) => {
+  return (
+    <div>
+      <h2>Statistics</h2>
+      <p>Good: {good}</p>
+      <p>Neutral: {neutral}</p>
+      <p>Bad: {bad}</p>
+      <p>Total Reviews: {total}</p>
+      <p>Positive Feedback Percentage: {positivePercentage}%</p>
+    </div>
+  );
+};
+
+Statistics.propTypes = {
+  good: PropTypes.number.isRequired,
+  neutral: PropTypes.number.isRequired,
+  bad: PropTypes.number.isRequired,
+  total: PropTypes.number.isRequired,
+  positivePercentage: PropTypes.number.isRequired,
 };
 
 export default Statistics;
-
-Statistics.propTypes = {
-  g: PropTypes.number.isRequired,
-  n: PropTypes.number.isRequired,
-  b: PropTypes.number.isRequired,
-  t: PropTypes.number.isRequired,
-  p: PropTypes.number.isRequired,
-};
